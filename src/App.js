@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import QuoteCard from './components/QuoteCard';
 import QuoteForm from './components/QuoteForm'
 import Quotes from './containers/Quotes';
-import Quote from './containers/Quotes'
 class App extends Component {
   render() {
     return (
