@@ -7,33 +7,53 @@ class QuoteForm extends Component {
 
   state = {
     //set up a controlled form with internal state
+    content: '',
+    author: ''
   }
 
   handleOnChange = event => {
-    // Handle Updating Component State
+    // Handle Updating Component State\
+    const value = event.target.value
+    const name = event.target.name
+
+    this.setState({
+      [name]: value
+    })
   }
 
   handleOnSubmit = event => {
     // Handle Form Submit event default
+    event.preventDefault()
     // Create quote object from state
-    // Pass quote object to action creator
+    const quote = {...this.state, votes: 0, id: uuid() } //copy everything in this.state and also add votes, id
+    // Pass quote object to action creator //send over to reducer to update state
+      //as soon as we connect a component we get dispatch- or action creators
+    //this.props.dispatch({type: "ADD_QUOTE", payload: quote}) ...we could do this but using a different pattern
+    this.props.addQuote(quote)
     // Update component state to return to default state
+    this.setState({
+      content: '',
+      author: ''
+    })
   }
 
   render() {
+    console.log("props is", this.props)
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-8 col-md-offset-2">
             <div className="panel panel-default">
               <div className="panel-body">
-                <form className="form-horizontal">
+                <form className="form-horizontal" onSubmit={this.handleOnSubmit}>
                   <div className="form-group">
                     <label htmlFor="content" className="col-md-4 control-label">Quote</label>
                     <div className="col-md-5">
                       <textarea
                         className="form-control"
                         value={this.state.content}
+                        onChange={this.handleOnChange}
+                        name="content"
                       />
                     </div>
                   </div>
@@ -44,6 +64,8 @@ class QuoteForm extends Component {
                         className="form-control"
                         type="text"
                         value={this.state.author}
+                        onChange={this.handleOnChange}
+                        name="author"
                       />
                     </div>
                   </div>
@@ -63,4 +85,5 @@ class QuoteForm extends Component {
 }
 
 //add arguments to connect as needed
-export default connect()(QuoteForm);
+//if using action creators, need to put them in the second arguement in order to hit teh reducer
+export default connect(null, { addQuote })(QuoteForm);
