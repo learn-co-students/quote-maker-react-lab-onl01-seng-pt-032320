@@ -4,13 +4,10 @@ export default function quotesReducer(state = [], action) {
   let idx;
   switch(action.type) {
     case ADD_QUOTE:
-      return {
+      return [
         ...state,
-        id: action.uuid,
-        content: action.content,
-        votes: 0,
-        author: action.author
-      };
+        action.quote
+      ];
     
     case REMOVE_QUOTE:
       //action.quoteId
@@ -21,13 +18,18 @@ export default function quotesReducer(state = [], action) {
     case UPVOTE_QUOTE:
       //action.quoteId
       console.log(action.type);
-      break;
+      idx = state.findIndex(quote => quote.id === action.quoteId);
+      const updootQuote = {...state[idx], votes: state[idx].votes + 1}
+      return [...state.slice(0, idx), updootQuote];
 
     case DOWNVOTE_QUOTE:
       //action.quoteId
       console.log(action.type);
-      break;
-
+      idx = state.findIndex(quote => quote.id === action.quoteId);
+      if (state[idx].votes > 0 ){
+        const downdootQuote = {...state[idx], votes: state[idx].votes - 1}
+        return [...state.slice(0, idx), downdootQuote];
+      } 
     default:
       return state;
   }

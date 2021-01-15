@@ -6,16 +6,17 @@ import { addQuote } from '../actions/quotes';
 class QuoteForm extends Component {
 
   state = {
-    //set up a controlled form with internal state
+    //set up a controlled form with internal state OK
     content: '',
     author: ''
   }
 
   handleOnChange = event => {
     // Handle Updating Component State OK
-    debugger; // check what event.target is
+    const value = event.target.value;
+    const name = event.target.name
     this.setState({
-      
+      [name]: value
     });
   }
 
@@ -25,7 +26,7 @@ class QuoteForm extends Component {
     // Pass quote object to action creator OK
     // Update component state to return to default OK
     event.preventDefault();
-    const quote = {...this.state, id: uuid() };
+    const quote = {...this.state, id: uuid(), votes: 0 };
     console.log("The quoteObj is", quote);
     this.props.addQuote(quote);
     this.setState({
@@ -41,7 +42,7 @@ class QuoteForm extends Component {
           <div className="col-md-8 col-md-offset-2">
             <div className="panel panel-default">
               <div className="panel-body">
-                <form className="form-horizontal">
+                <form className="form-horizontal" onSubmit={this.handleOnSubmit}>
                   <div className="form-group">
                     <label htmlFor="content" className="col-md-4 control-label">Quote</label>
                     <div className="col-md-5">
