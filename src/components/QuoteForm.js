@@ -6,18 +6,33 @@ import { addQuote } from '../actions/quotes';
 class QuoteForm extends Component {
 
   state = {
-    //set up a controlled form with internal state
+    //set up a controlled form with internal state OK
+    content: '',
+    author: ''
   }
 
   handleOnChange = event => {
-    // Handle Updating Component State
+    // Handle Updating Component State OK
+    const value = event.target.value;
+    const name = event.target.name
+    this.setState({
+      [name]: value
+    });
   }
 
   handleOnSubmit = event => {
-    // Handle Form Submit event default
-    // Create quote object from state
-    // Pass quote object to action creator
-    // Update component state to return to default state
+    // Handle Form Submit event default OK
+    // Create quote object from state OK
+    // Pass quote object to action creator OK
+    // Update component state to return to default OK
+    event.preventDefault();
+    const quote = {...this.state, id: uuid(), votes: 0 };
+    console.log("The quoteObj is", quote);
+    this.props.addQuote(quote);
+    this.setState({
+      content: '',
+      author: ''
+    });
   }
 
   render() {
@@ -27,23 +42,27 @@ class QuoteForm extends Component {
           <div className="col-md-8 col-md-offset-2">
             <div className="panel panel-default">
               <div className="panel-body">
-                <form className="form-horizontal">
+                <form className="form-horizontal" onSubmit={this.handleOnSubmit}>
                   <div className="form-group">
                     <label htmlFor="content" className="col-md-4 control-label">Quote</label>
                     <div className="col-md-5">
-                      <textarea
+                    <textarea
                         className="form-control"
+                        name="content"
                         value={this.state.content}
+                        onChange={this.handleOnChange}
                       />
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="author" className="col-md-4 control-label">Author</label>
                     <div className="col-md-5">
-                      <input
+                    <input
                         className="form-control"
                         type="text"
+                        name="author"
                         value={this.state.author}
+                        onChange={this.handleOnChange}
                       />
                     </div>
                   </div>
@@ -62,5 +81,4 @@ class QuoteForm extends Component {
   }
 }
 
-//add arguments to connect as needed
-export default connect()(QuoteForm);
+export default connect(null, { addQuote })(QuoteForm);
