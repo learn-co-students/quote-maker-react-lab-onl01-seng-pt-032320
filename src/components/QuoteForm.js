@@ -7,14 +7,15 @@ class QuoteForm extends Component {
 
   state = {
     //set up a controlled form with internal state
-    text = ''
+    content: '',
+    author: ''
   }
 
   handleOnChange = event => {
     // Handle Updating Component State OK
     debugger; // check what event.target is
     this.setState({
-      text: event.target.value
+      
     });
   }
 
@@ -24,11 +25,12 @@ class QuoteForm extends Component {
     // Pass quote object to action creator OK
     // Update component state to return to default OK
     event.preventDefault();
-    const quote = this.state;
+    const quote = {...this.state, id: uuid() };
     console.log("The quoteObj is", quote);
     this.props.addQuote(quote);
     this.setState({
-      text: ''
+      content: '',
+      author: ''
     });
   }
 
@@ -43,19 +45,23 @@ class QuoteForm extends Component {
                   <div className="form-group">
                     <label htmlFor="content" className="col-md-4 control-label">Quote</label>
                     <div className="col-md-5">
-                      <textarea
+                    <textarea
                         className="form-control"
+                        name="content"
                         value={this.state.content}
+                        onChange={this.handleOnChange}
                       />
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="author" className="col-md-4 control-label">Author</label>
                     <div className="col-md-5">
-                      <input
+                    <input
                         className="form-control"
                         type="text"
+                        name="author"
                         value={this.state.author}
+                        onChange={this.handleOnChange}
                       />
                     </div>
                   </div>
@@ -74,15 +80,4 @@ class QuoteForm extends Component {
   }
 }
 
-//add arguments to connect as needed
-const mapStateToProps = state => {
-  return { 
-    content: state.content,
-    author: state.author
-  };
-}
-//is this something i need?
-const mapDispatchToProps = dispatch => {
-  return { addQuote: () => dispatch( {type: 'ADD_QUOTE'}) };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteForm);
+export default connect(null, { addQuote })(QuoteForm);
