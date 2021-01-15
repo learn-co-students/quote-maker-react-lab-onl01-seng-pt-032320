@@ -7,17 +7,29 @@ class QuoteForm extends Component {
 
   state = {
     //set up a controlled form with internal state
+    text = ''
   }
 
   handleOnChange = event => {
-    // Handle Updating Component State
+    // Handle Updating Component State OK
+    debugger; // check what event.target is
+    this.setState({
+      text: event.target.value
+    });
   }
 
   handleOnSubmit = event => {
-    // Handle Form Submit event default
-    // Create quote object from state
-    // Pass quote object to action creator
-    // Update component state to return to default state
+    // Handle Form Submit event default OK
+    // Create quote object from state OK
+    // Pass quote object to action creator OK
+    // Update component state to return to default OK
+    event.preventDefault();
+    const quote = this.state;
+    console.log("The quoteObj is", quote);
+    this.props.addQuote(quote);
+    this.setState({
+      text: ''
+    });
   }
 
   render() {
@@ -63,4 +75,14 @@ class QuoteForm extends Component {
 }
 
 //add arguments to connect as needed
-export default connect()(QuoteForm);
+const mapStateToProps = state => {
+  return { 
+    content: state.content,
+    author: state.author
+  };
+}
+//is this something i need?
+const mapDispatchToProps = dispatch => {
+  return { addQuote: () => dispatch( {type: 'ADD_QUOTE'}) };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(QuoteForm);
