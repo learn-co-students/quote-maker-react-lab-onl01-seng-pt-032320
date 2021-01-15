@@ -20,16 +20,19 @@ export default function quotesReducer(state = [], action) {
       console.log(action.type);
       idx = state.findIndex(quote => quote.id === action.quoteId);
       const updootQuote = {...state[idx], votes: state[idx].votes + 1}
-      return [...state.slice(0, idx), updootQuote];
+      return [...state.slice(0, idx), updootQuote, ...state.slice(idx +1)];
 
     case DOWNVOTE_QUOTE:
       //action.quoteId
       console.log(action.type);
-      idx = state.findIndex(quote => quote.id === action.quoteId);
-      if (state[idx].votes > 0 ){
-        const downdootQuote = {...state[idx], votes: state[idx].votes - 1}
-        return [...state.slice(0, idx), downdootQuote];
-      } 
+      //otherway to do it
+      return state.map(quote => {
+        if (quote.id === action.quoteId && quote.votes > 0){
+          return {...quote, votes: quote.votes - 1}
+        } else {
+          return quote;
+        }
+      })
     default:
       return state;
   }
