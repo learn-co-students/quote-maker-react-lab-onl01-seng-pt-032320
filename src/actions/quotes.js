@@ -5,20 +5,18 @@ export const addQuote = quote => {
         quote: quote
     }
 }
-
-export const downvoteQuote = id => {
-    return {
-        type: 'DOWNVOTE_QUOTE',
-        quoteId: id 
-    }
-}
 export const removeQuote = id => {
     return {
         type: 'REMOVE_QUOTE',
         quoteId: id
     }
 }
-
+export const downvoteQuote = id => {
+    return {
+        type: 'DOWNVOTE_QUOTE',
+        quoteId: id 
+    }
+}
 export const upvoteQuote = id => {
     return {
         type: 'UPVOTE_QUOTE',

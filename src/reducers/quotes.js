@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 const id = uuid();
+const quotes = [{content: "wise man", author: "Nabil", id: 1, votes: 0}]
 
 export default (state = [], action) => {
   let idx;
@@ -7,8 +8,25 @@ export default (state = [], action) => {
     case 'ADD_QUOTE':
       return [...state, action.quote ]
     case 'REMOVE_QUOTE':
-      idx = state.findIndex(quote => quote.id === action.id);
-      return [...state.slice(0, idx), ...state.slice(idx + 1)];
+     return state.filter(q => q.id != action.quoteId)
+     case 'UPVOTE_QUOTE':
+       return state.map(quote => {
+         if(quote.id === action.quoteId){
+           return {...quote, votes: quote.votes + 1}
+         }
+         else {
+           return quote
+         }
+       })
+      case 'DOWNVOTE_QUOTE':
+        return state.map(quote => {
+          if(quote.id === action.quoteId && quote.votes > 0){
+            return {...quote, votes: quote.votes - 1}
+          }
+          else {
+            return quote
+          }
+        })
     default:
       return state;
 
